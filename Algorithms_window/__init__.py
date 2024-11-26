@@ -1,0 +1,1 @@
+from Algorithms_window.Window_algo import AlgoWindow
