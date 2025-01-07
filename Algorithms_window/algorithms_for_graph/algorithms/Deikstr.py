@@ -32,7 +32,6 @@ class Deikstr_Algorithm(algorithm):
         shortest_path = {node: float("inf") for node in self.graph["Top"].keys()}
         previous_nodes = {}
         shortest_path[start_node] = 0
-
         while unvisited_nodes:
             current_min_node = None
             for node in unvisited_nodes:
@@ -49,7 +48,8 @@ class Deikstr_Algorithm(algorithm):
             for neighbor in neighbors:
 
                 if self.parameters["Oriented graph"]:
-                    weight = self.weight_edge(self.graph["Arrow"][(current_min_node, neighbor)]["algo"]["weight"])
+                    if current_min_node != neighbor:
+                        weight = self.weight_edge(self.graph["Arrow"][(current_min_node, neighbor)]["algo"]["weight"])
                 else:
                     weight = self.weight_edge(
                         self.graph["Stick"][frozenset([current_min_node, neighbor])]["algo"]["weight"])
