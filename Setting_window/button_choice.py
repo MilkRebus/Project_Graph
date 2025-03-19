@@ -12,6 +12,11 @@ class Slider(QWidget):
         self.name_label = QLabel(Name)
 
         self.slider = QSlider(Qt.Orientation.Horizontal, self)
+        self.slider.setStyleSheet("QSlider::sub-page:Horizontal { background-color: cyan; }"
+              "QSlider::add-page:Horizontal { background-color: #333333; }"
+              "QSlider::groove:Horizontal { background: transparent; height:4px; }"
+              "QSlider::handle:Horizontal { width:10px; border-radius:5px; background:cyan; margin: -5px 0px -5px 0px; }");
+
 
         self.val_label.setStyleSheet("""background-color: black; color: white; """)
         self.name_label.setStyleSheet("""background-color: black; color: white; """)
