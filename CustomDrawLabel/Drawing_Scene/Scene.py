@@ -11,7 +11,7 @@ class View_scene(DrawScene):
         self.name_element = {"Arrow", "Top", "Stick", "Loop"}
         self.setSceneRect(0, 0, 300, 200)
         self.last_state = 0
-        self.state = "Top"
+        self.state = None
 
         self.brush = QBrush(QColor(f"{background_color}"))
 

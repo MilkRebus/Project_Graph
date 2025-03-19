@@ -10,11 +10,17 @@ class Canvas_lb(QGraphicsView):
     def __init__(self, Memory):
         super(Canvas_lb, self).__init__(View_scene(Memory))
         self.setStyleSheet("border: 0px")
+        self._zoom = 0
+        self.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+        self.setResizeAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
+        self.setSceneRect(0, 0, 100_000_000, 100_000_000)
+        self.centerOn(100_000, 100_000)
 
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setRenderHint(QPainter.RenderHint.Antialiasing)
-        self.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
+        self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
+
         brush = QBrush(QColor(f"{background_color}"))
         self.setBackgroundBrush(brush)
 
@@ -22,6 +28,7 @@ class Canvas_lb(QGraphicsView):
         self.scene().clear_flags()
         self.scene().clear_light_path()
         if state is not None:
+            self.setDragMode(QGraphicsView.DragMode.NoDrag)
             if state["type"] == "sticking":
                 self.scene().set_state(state["name"])
             elif state["type"] == "helped_mark":
@@ -39,4 +46,11 @@ class Canvas_lb(QGraphicsView):
                 elif state["name"] == "clear_mark":
                     self.scene().clear_mark()
         else:
+            self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
             self.scene().set_state(state)
+
+    def wheelEvent(self, event):
+        angle = event.angleDelta().y()
+        zoomFactor = 1 + (angle / 1000)
+        self._zoom *= zoomFactor
+        self.scale(zoomFactor, zoomFactor)
