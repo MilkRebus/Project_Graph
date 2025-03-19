@@ -1,4 +1,3 @@
-from PyQt6.QtGui import QColor, QBrush
 from PyQt6.QtWidgets import QGraphicsScene
 
 from CustomDrawLabel.Drawing_Scene.Primitive_Element import *

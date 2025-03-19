@@ -27,6 +27,7 @@ class Canvas_lb(QGraphicsView):
     def set_condition(self, state=None):
         self.scene().clear_flags()
         self.scene().clear_light_path()
+
         if state is not None:
             self.setDragMode(QGraphicsView.DragMode.NoDrag)
             if state["type"] == "sticking":
@@ -46,7 +47,6 @@ class Canvas_lb(QGraphicsView):
                 elif state["name"] == "clear_mark":
                     self.scene().clear_mark()
         else:
-            self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
             self.scene().set_state(state)
 
     def wheelEvent(self, event):

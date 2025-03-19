@@ -2,7 +2,7 @@ import sys
 
 from PyQt6.QtCore import QEvent
 from PyQt6.QtGui import QIcon
-from PyQt6.QtWidgets import QApplication, QMainWindow
+from PyQt6.QtWidgets import QApplication, QMainWindow, QGraphicsView
 
 from Algo_Memory.Memory_algo import Memory
 from Algorithms_window import *
@@ -53,6 +53,8 @@ class MainWindow(QMainWindow):
                 self.Canvas.set_condition(state)
             if state is not None and state["name"] == "Setting":
                 self.setting_window_restate()
+            if state is None:
+                self.Canvas.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
             return True
         return False
 

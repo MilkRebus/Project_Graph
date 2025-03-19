@@ -9,7 +9,6 @@ class View_scene(DrawScene):
         super(View_scene, self).__init__(Memory)
         self.Memory = Memory
         self.name_element = {"Arrow", "Top", "Stick", "Loop"}
-        self.setSceneRect(0, 0, 300, 200)
         self.last_state = 0
         self.state = None
 
