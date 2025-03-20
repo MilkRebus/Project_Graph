@@ -8,9 +8,11 @@ class Window_setting(QDialog):
     path_save_to = pyqtSignal()
     def __init__(self, parent=None):
         super(Window_setting, self).__init__(parent)
+        self.style = """background-color: #b7b7b7; border: solid #434343; border-width: 2px; 
+                        border-radius: 10px;height: 30px; font-size: 20px;"""
         self.grid_layout = QGridLayout()
         self.setLayout(self.grid_layout)
-        self.setFixedSize(600, 500)
+        self.setFixedSize(500, 500)
         self._path = None
         self._save_path = None
         self.setWindowTitle("Setting")
@@ -54,9 +56,9 @@ class Window_setting(QDialog):
         self.open_button = QPushButton("Open")
         self.save_button = QPushButton("Save")
 
-        self.save_button.setStyleSheet("""background-color: white;border-radius: 10px;font: bold 14px;""")
-        self.open_button.setStyleSheet("""background-color: white;border-radius: 10px;font: bold 14px;""")
-        self.exit_button.setStyleSheet("""background-color: white;border-radius: 10px;font: bold 14px;""")
+        self.save_button.setStyleSheet(self.style)
+        self.open_button.setStyleSheet(self.style)
+        self.exit_button.setStyleSheet(self.style)
 
         self.save_button.clicked.connect(self.saveFile)
         self.open_button.clicked.connect(self.handleOpen)
@@ -73,7 +75,7 @@ class Window_setting(QDialog):
         start = QStandardPaths.standardLocations(
             QStandardPaths.StandardLocation.HomeLocation)[0]
         path = QFileDialog.getSaveFileName(self, "Save", start)[0]
-        if path != None or path != "":
+        if path != None and path != "":
             self._save_path = path
             if not(path.endswith(".txt")):
                 self._save_path += ".txt"
@@ -86,5 +88,5 @@ class Window_setting(QDialog):
     def widget_pos(self):
         self.grid_layout.addWidget(self.open_button, 0, 0)
         self.grid_layout.addWidget(self.save_button, 0, 1)
-        self.grid_layout.addWidget(self.group, 1, 0)
-        self.grid_layout.addWidget(self.exit_button, 2, 0)
+        self.grid_layout.addWidget(self.group, 1, 0, 1, 2)
+        self.grid_layout.addWidget(self.exit_button, 2, 0, 1, 2)

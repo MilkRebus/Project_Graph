@@ -27,12 +27,13 @@ class Canvas_lb(QGraphicsView):
     def set_condition(self, state=None):
         self.scene().clear_flags()
         self.scene().clear_light_path()
-
         if state is not None:
-            self.setDragMode(QGraphicsView.DragMode.NoDrag)
+
             if state["type"] == "sticking":
+                self.setDragMode(QGraphicsView.DragMode.NoDrag)
                 self.scene().set_state(state["name"])
             elif state["type"] == "helped_mark":
+                self.setDragMode(QGraphicsView.DragMode.NoDrag)
                 self.scene().set_state(state["type"])
                 self.scene().set_mark_name(state["name"])
             else:
@@ -48,6 +49,7 @@ class Canvas_lb(QGraphicsView):
                     self.scene().clear_mark()
         else:
             self.scene().set_state(state)
+            self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
 
     def wheelEvent(self, event):
         angle = event.angleDelta().y()

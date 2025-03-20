@@ -77,7 +77,7 @@ class ReadyToolBar(QLabel):
                     state["name"]]) and self.sticking_button.get_state():
                     self.sticking_button.change_style()
                 self.sticking_button = self.dict_button[state["name"]]
-        self.state = state
+        if state is None or state["name"] != "Tools": self.state = state
 
     def get_state(self):
         return self.state

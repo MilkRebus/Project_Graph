@@ -18,8 +18,8 @@ class Slider(QWidget):
               "QSlider::handle:Horizontal { width:10px; border-radius:5px; background:cyan; margin: -5px 0px -5px 0px; }");
 
 
-        self.val_label.setStyleSheet("""background-color: black; color: white; """)
-        self.name_label.setStyleSheet("""background-color: black; color: white; """)
+        self.val_label.setStyleSheet("""background-color: black; color: white;font-size: 14px; """)
+        self.name_label.setStyleSheet("""background-color: black; color: white; font-size: 14px;""")
         self.slider.setOrientation(Qt.Orientation.Horizontal)
 
         self.slider.setMinimum(default//2)

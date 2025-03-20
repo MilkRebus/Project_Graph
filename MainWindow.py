@@ -50,13 +50,15 @@ class MainWindow(QMainWindow):
         if event.type() == QEvent.Type.MouseButtonPress or event.type() == QEvent.Type.MouseButtonDblClick:
             state = self.ToolBar.get_state()
             if state is not None and state["name"] == "Done":
+                self.ToolBar.clear()
+                self.Canvas.set_condition()
                 self.algo_window_restate()
+            elif state is not None and state["name"] == "Setting":
+                self.ToolBar.clear()
+                self.Canvas.set_condition()
+                self.setting_window_restate()
             else:
                 self.Canvas.set_condition(state)
-            if state is not None and state["name"] == "Setting":
-                self.setting_window_restate()
-            if state is None:
-                self.Canvas.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
             return True
         return False
 
@@ -65,13 +67,11 @@ class MainWindow(QMainWindow):
             self.window_algo.show()
         else:
             self.window_algo.close()
-            self.Canvas.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
     def setting_window_restate(self):
         if not self.window_setting.isVisible():
             self.window_setting.show()
         else:
             self.window_setting.close()
-            self.Canvas.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
     def open_file(self):
         self.Canvas.scene().clear_all()
         self.Canvas.scene().from_file(self.window_setting.get_path())
