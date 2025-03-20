@@ -8,12 +8,14 @@ from CustomToolBar.LabelGroup import Group
 
 class ReadyToolBar(QLabel):
     clicked = pyqtSignal()
+    tap = pyqtSignal()
 
     def __init__(self, parent=None):
         super(ReadyToolBar, self).__init__(parent)
         self.num = len(arr_name_button)
         self.depth_button = 1
         self.state = None
+        self.tap = None
         self.sticking_button = None
         self.resize(size_button * 2, size_button)
         self.dict_button = {}
@@ -77,7 +79,13 @@ class ReadyToolBar(QLabel):
                     state["name"]]) and self.sticking_button.get_state():
                     self.sticking_button.change_style()
                 self.sticking_button = self.dict_button[state["name"]]
-        if state is None or state["name"] != "Tools": self.state = state
+            self.state = state
+        else:
+            self.tap = state
 
     def get_state(self):
         return self.state
+    def get_tap(self):
+        tap = self.tap
+        self.tap = None
+        return tap

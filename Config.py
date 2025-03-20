@@ -1,4 +1,4 @@
-size_button = 44
+size_button = 53
 diameter_top = 48
 size_text = 14
 width_pen = 3

@@ -49,14 +49,17 @@ class MainWindow(QMainWindow):
     def eventFilter(self, obj, event):
         if event.type() == QEvent.Type.MouseButtonPress or event.type() == QEvent.Type.MouseButtonDblClick:
             state = self.ToolBar.get_state()
-            if state is not None and state["name"] == "Done":
-                self.ToolBar.clear()
-                self.Canvas.set_condition()
-                self.algo_window_restate()
-            elif state is not None and state["name"] == "Setting":
-                self.ToolBar.clear()
-                self.Canvas.set_condition()
-                self.setting_window_restate()
+            tap = self.ToolBar.get_tap()
+            if tap != None:
+                self.Canvas.set_condition(tap)
+                if tap["name"] == "Done":
+                    # self.ToolBar.clear()
+                    # self.Canvas.set_condition()
+                    self.algo_window_restate()
+                if tap["name"] == "Setting":
+                    # self.ToolBar.clear()
+                    # self.Canvas.set_condition()
+                    self.setting_window_restate()
             else:
                 self.Canvas.set_condition(state)
             return True

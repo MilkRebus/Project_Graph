@@ -66,14 +66,14 @@ class Window_setting(QDialog):
 
     def handleOpen(self):
         start = QStandardPaths.standardLocations(
-            QStandardPaths.StandardLocation.HomeLocation)[0]
+            QStandardPaths.StandardLocation.DocumentsLocation)[0]
         path = QFileDialog.getOpenFileName(self, "Open", start)[0]
         if path.endswith(".txt"):
             self._path = path
             self.path_changed.emit()
     def saveFile(self):
         start = QStandardPaths.standardLocations(
-            QStandardPaths.StandardLocation.HomeLocation)[0]
+            QStandardPaths.StandardLocation.DocumentsLocation)[0]
         path = QFileDialog.getSaveFileName(self, "Save", start)[0]
         if path != None and path != "":
             self._save_path = path
