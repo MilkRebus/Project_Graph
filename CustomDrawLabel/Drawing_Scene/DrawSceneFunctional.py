@@ -9,7 +9,7 @@ class DrawScene(QGraphicsScene):
         self.Memory = Memory
         self.dict_item = {"Top": Top, "Arrow": Arrow, "Loop": Loop, "Stick": Stick}
 
-    def drawElement(self, name, cord):
+    def drawElement(self, name, cord, text=None):
         if name == "Top":
             arr = self.collidingItems(collidingTop(cord))
         else:
@@ -19,6 +19,42 @@ class DrawScene(QGraphicsScene):
             item = self.dict_item[name](self.Memory.get_cord_element(name))
             self.addItem(item)
             self.Memory.add_element(self.Memory.get_cord_element(name), item, name)
+            if text is not None:
+                if item.get_text() is None:
+                    self.addItem(Text(item.get_cord(), item))
+                item.set_text(text, True)
+                self.Memory.save_text(item.get_text(), item.get_cord(), item.name)
+
+    def from_file(self, path):
+        with open(path) as file:
+            cur_type = file.readline().strip()
+            if cur_type != 'Top':
+                return
+            try:
+                for i in file:
+                    if i.strip() in self.dict_item.keys():
+                        cur_type = i.strip()
+                        continue
+                    s = i.split(";")
+                    if len(s) > 1:
+                        s[1] = s[1].strip()
+                        if s[1].endswith(".0"): s[1] = s[1][:-2]
+                    if cur_type == "Top":
+                        cord = tuple(map(float, s[0].split()))
+                        if len(s) > 1:
+                            self.drawElement(cur_type, cord, s[1])
+                        else:
+                            self.drawElement(cur_type, cord)
+                    else:
+                        cord = list(map(float, s[0].split()))
+                        if len(s) > 1:
+                            self.drawElement(cur_type, tuple(cord[:2]))
+                            self.drawElement(cur_type, tuple(cord[2:]), s[1])
+                        else:
+                            self.drawElement(cur_type, tuple(cord[:2]))
+                            self.drawElement(cur_type, tuple(cord[2:]))
+            except:
+                print("ERROR")
 
     def setFocusText(self, cord):
         arr = self.collidingItems(focus(cord, 5))

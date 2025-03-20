@@ -2,7 +2,7 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPainter, QBrush, QColor
 from PyQt6.QtWidgets import QGraphicsView
 
-from Config import background_color
+from Config import background_color, min_zoom, max_zoom
 from CustomDrawLabel.Drawing_Scene.Scene import View_scene
 
 
@@ -10,7 +10,7 @@ class Canvas_lb(QGraphicsView):
     def __init__(self, Memory):
         super(Canvas_lb, self).__init__(View_scene(Memory))
         self.setStyleSheet("border: 0px")
-        self._zoom = 0
+        self._zoom = 1
         self.setTransformationAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
         self.setResizeAnchor(QGraphicsView.ViewportAnchor.AnchorUnderMouse)
         self.setSceneRect(0, 0, 100_000_000, 100_000_000)
@@ -52,5 +52,8 @@ class Canvas_lb(QGraphicsView):
     def wheelEvent(self, event):
         angle = event.angleDelta().y()
         zoomFactor = 1 + (angle / 1000)
-        self._zoom *= zoomFactor
-        self.scale(zoomFactor, zoomFactor)
+        if (self._zoom > min_zoom and zoomFactor < 1) or\
+                (self._zoom < max_zoom and zoomFactor > 1):
+            self._zoom *= zoomFactor
+        if min_zoom < self._zoom < max_zoom:
+            self.scale(zoomFactor, zoomFactor)

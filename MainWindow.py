@@ -27,6 +27,8 @@ class MainWindow(QMainWindow):
         self.window_algo.helped_mark.connect(self.canvas_mark_state)
         self.window_algo.light_path_change.connect(self.set_light_path)
         self.window_algo.change_status.connect(self.clear_mark)
+        self.window_setting.path_changed.connect(self.open_file)
+        self.window_setting.path_save_to.connect(self.save_file)
 
     def view_window(self):
         self.setGeometry(200, 200, 700, 500)
@@ -63,15 +65,23 @@ class MainWindow(QMainWindow):
             self.window_algo.show()
         else:
             self.window_algo.close()
+            self.Canvas.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
     def setting_window_restate(self):
         if not self.window_setting.isVisible():
             self.window_setting.show()
         else:
             self.window_setting.close()
+            self.Canvas.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
+    def open_file(self):
+        self.Canvas.scene().clear_all()
+        self.Canvas.scene().from_file(self.window_setting.get_path())
+    def save_file(self):
+        self.Memory.save_to_file(self.window_setting.get_save_path())
 
     def closeEvent(self, event):
         self.window_setting.hide()
         self.window_algo.hide()
+
 
 
 app = QApplication(sys.argv)

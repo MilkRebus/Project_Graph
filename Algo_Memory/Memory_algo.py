@@ -12,6 +12,29 @@ class Memory(Mark_element_algo):
         self.cancellation = deque()
         self.recovery = deque()
 
+    def save_to_file(self, path):
+        with open(path, "w") as file:
+            for i in ["Top", "Arrow", "Stick", "Loop"]:
+                if len(self.section[i].get_dict()) > 0:
+                    file.write(i+"\n")
+                    d = self.section[i].get_dict()
+                    for cord in d:
+                        s = f"{cord}"
+                        if i == "Stick": s = s[11:-2]
+                        if i == "Loop": s += f" {d[tuple(cord)]["render"]['help']}"
+                        if i != "Stick" and d[tuple(cord)]["algo"]['weight'] != None:
+                            s += f";{d[tuple(cord)]["algo"]['weight']}"
+                        elif i == "Top" and d[tuple(cord)]["algo"]['name'] != None:
+                            s += f";{d[tuple(cord)]["algo"]['name']}"
+                        elif i == "Stick" and d[frozenset(cord)]["algo"]['weight'] != None:
+                            s += f";{d[frozenset(cord)]["algo"]['weight']}"
+
+                        s = s.replace(")", "")
+                        s = s.replace("(", "")
+                        s = s.replace(",", "")
+                        file.write(f"{s}\n")
+
+
     def replay(self, name):
         if name not in ("Arrow", "Stick") or (
                 not (self.section[name].get_cord_element() in self.section[self.opposites[name]].get_dict() or

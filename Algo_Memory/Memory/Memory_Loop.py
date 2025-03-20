@@ -37,11 +37,12 @@ class Loop:
             self.last_cord_loop = None
 
     def add_node(self, key, item, value=None):
-        if len(key) > 1: key = key[0]
+        if len(key) > 1:
+            key, h = key[0], key[1]
         if value is not None:
             self.dict_loop[key] = value
         else:
-            self.dict_loop[key] = {"render": {"color": color_top, "item": item, "type": "Loop"},
+            self.dict_loop[key] = {"render": {"color": color_top, "item": item, "type": "Loop", "help": h},
                                    "algo": {"weight": None}
                                    }
 

@@ -45,3 +45,6 @@ joint = radius_top * depth_loop_coefficient + radius_loop
 dist_loop = joint + radius_loop
 
 depth_due_arrow = radius_top * depth_coefficient
+
+max_zoom = 2.5
+min_zoom = 0.2

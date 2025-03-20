@@ -1,14 +1,18 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QDialog
+from PyQt6.QtCore import Qt, QStandardPaths, pyqtSignal
+from PyQt6.QtWidgets import QWidget, QGridLayout, QPushButton, QDialog, QFileDialog
 from .button_choice import Slider
 from .change_group import Group
 
 class Window_setting(QDialog):
+    path_changed = pyqtSignal()
+    path_save_to = pyqtSignal()
     def __init__(self, parent=None):
         super(Window_setting, self).__init__(parent)
         self.grid_layout = QGridLayout()
         self.setLayout(self.grid_layout)
-        self.setFixedSize(500, 400)
+        self.setFixedSize(600, 500)
+        self._path = None
+        self._save_path = None
         self.setWindowTitle("Setting")
         self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
         #self.setWindowFlag(Qt.WindowType.)
@@ -46,10 +50,41 @@ class Window_setting(QDialog):
 
     def widgets(self):
         self.group = Group(self.setting, self.default_setting)
-        self.exit_button = QPushButton("Save and Exit")
+        self.exit_button = QPushButton("Save setting")
+        self.open_button = QPushButton("Open")
+        self.save_button = QPushButton("Save")
+
+        self.save_button.setStyleSheet("""background-color: white;border-radius: 10px;font: bold 14px;""")
+        self.open_button.setStyleSheet("""background-color: white;border-radius: 10px;font: bold 14px;""")
         self.exit_button.setStyleSheet("""background-color: white;border-radius: 10px;font: bold 14px;""")
+
+        self.save_button.clicked.connect(self.saveFile)
+        self.open_button.clicked.connect(self.handleOpen)
         self.exit_button.clicked.connect(self.closeEvent)
 
+    def handleOpen(self):
+        start = QStandardPaths.standardLocations(
+            QStandardPaths.StandardLocation.HomeLocation)[0]
+        path = QFileDialog.getOpenFileName(self, "Open", start)[0]
+        if path.endswith(".txt"):
+            self._path = path
+            self.path_changed.emit()
+    def saveFile(self):
+        start = QStandardPaths.standardLocations(
+            QStandardPaths.StandardLocation.HomeLocation)[0]
+        path = QFileDialog.getSaveFileName(self, "Save", start)[0]
+        if path != None or path != "":
+            self._save_path = path
+            if not(path.endswith(".txt")):
+                self._save_path += ".txt"
+            self.path_save_to.emit()
+
+    def get_path(self):
+        return self._path
+    def get_save_path(self):
+        return self._save_path
     def widget_pos(self):
-        self.grid_layout.addWidget(self.group, 0, 0)
-        self.grid_layout.addWidget(self.exit_button, 1, 0)
+        self.grid_layout.addWidget(self.open_button, 0, 0)
+        self.grid_layout.addWidget(self.save_button, 0, 1)
+        self.grid_layout.addWidget(self.group, 1, 0)
+        self.grid_layout.addWidget(self.exit_button, 2, 0)

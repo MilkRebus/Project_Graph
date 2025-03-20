@@ -25,13 +25,16 @@ class Arrow(ElementItem):
             child = self.childItems()[0]
             child.remake(self.text)
 
-    def set_text(self, text):
-        if self.text is None:
-            self.text = ""
-        if text is None:
-            self.text = self.text[:-1]
-        elif len(self.text) < 3 and (text.isdigit() or text == "." or (text == "-" and self.text == "")):
-            self.text += text
+    def set_text(self, text, flag=False):
+        if not(flag):
+            if self.text is None:
+                self.text = ""
+            if text is None:
+                self.text = self.text[:-1]
+            elif len(self.text) < 3 and (text.isdigit() or text == "." or (text == "-" and self.text == "")):
+                self.text += text
+        else:
+            self.text = text
         child = self.childItems()[0]
         child.set_text(self.text)
 
@@ -42,13 +45,16 @@ class Loop(ElementItem):
         self.setZValue(0)
         self.setPath(LoopPath(cord))
 
-    def set_text(self, text):
-        if self.text is None:
-            self.text = ""
-        if text is None:
-            self.text = self.text[:-1]
-        elif len(self.text) < 3 and (text.isdigit() or text == "." or (text == "-" and self.text == "")):
-            self.text += text
+    def set_text(self, text, flag=False):
+        if not (flag):
+            if self.text is None:
+                self.text = ""
+            if text is None:
+                self.text = self.text[:-1]
+            elif len(self.text) < 3 and (text.isdigit() or text == "." or (text == "-" and self.text == "")):
+                self.text += text
+        else:
+            self.text = text
         child = self.childItems()[0]
         child.set_text(self.text)
 
@@ -59,14 +65,17 @@ class Stick(ElementItem):
         self.setZValue(0)
         self.setPath(StickPath(cord))
 
-    def set_text(self, text):
+    def set_text(self, text, flag=False):
+        if not (flag):
+            if self.text is None:
+                self.text = ""
+            if text is None:
+                self.text = self.text[:-1]
+            elif len(self.text) < 3 and (text.isdigit() or text == "." or (text == "-" and self.text == "")):
+                self.text += text
+        else:
+            self.text = text
         child = self.childItems()[0]
-        if self.text is None:
-            self.text = ""
-        if text is None:
-            self.text = self.text[:-1]
-        elif len(self.text) < 3 and (text.isdigit() or text == "." or (text == "-" and self.text == "")):
-            self.text += text
         child.set_text(self.text)
 
 
@@ -77,12 +86,15 @@ class Top(ElementItem):
         self.setFlags(QGraphicsItem.GraphicsItemFlag.ItemIsFocusable)
         self.setPath(TopPath(cord))
 
-    def set_text(self, text):
-        if self.text is None:
-            self.text = ""
-        if text is None:
-            self.text = self.text[:-1]
-        elif len(self.text) < 3:
-            self.text += text
+    def set_text(self, text, flag=False):
+        if not(flag):
+            if self.text is None:
+                self.text = ""
+            if text is None:
+                self.text = self.text[:-1]
+            elif len(self.text) < 3:
+                self.text += text
+        else:
+            self.text = text
         child = self.childItems()[0]
         child.set_text(self.text)
